@@ -9,7 +9,7 @@ systemctl restart systemd-hostnamed
 /etc/init.d/network restart
 
 # install puppetserver
-rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
+rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
 yum install -y puppetserver
 
 # update path (this will be fixed after a reboot)
