@@ -50,4 +50,8 @@ puppet agent -t # configure manager
 puppet agent -t # once more to update exported resources
 puppet resource service puppet ensure=running enable=true
 
+# set ourselves as the DNS server (since we're running BIND9)
+echo "DNS1=127.0.0.1" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+/etc/init.d/network restart
+
 #wc notify --data-binary '{"status": "SUCCESS"}'
