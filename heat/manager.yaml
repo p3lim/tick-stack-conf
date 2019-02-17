@@ -1,0 +1,119 @@
+# https://docs.openstack.org/heat/rocky/template_guide/hot_spec.html#hot-spec-template-version
+heat_template_version: queens
+
+description: >
+  HOT template to create a new network and router to the public network, and
+  for deploying a manager compute instance into the network. The instance is
+  assigned a floating IP address. This creates the tick.lab infrastructure,
+  with the manager working as a DNS server and Puppet master.
+
+parameters:
+  image:
+    type: string
+    description: ID or name of image used for the compute instance(s).
+    default: Ubuntu Server 18.04 LTS (Bionic Beaver) amd64
+  flavor:
+    type: string
+    description: ID or name of flavor used for the compute instance(s).
+    default: m1.medium
+  key_name:
+    type: string
+    description: Name of keypair used to access the compute instance(s).
+  public_net_id:
+    type: string
+    description: ID or name of the public network floating IP addresses are allocated from.
+  mgmt_net_name:
+    type: string
+    description: Name of management network to be created.
+    default: tick_mgmt_net
+  mgmt_net_cidr:
+    type: string
+    description: Management network address (CIDR notation).
+    default: 192.168.100.0/24
+  mgmt_net_gateway:
+    type: string
+    description: Management network gateway address.
+    default: 192.168.100.1
+  mgmt_net_pool_start:
+    type: string
+    description: Start of the management network IP address allocation pool.
+    default: 192.168.100.100
+  mgmt_net_pool_end:
+    type: string
+    description: End of the management network IP address allocation pool.
+    default: 192.168.100.199
+
+resources:
+  mgmt_net:
+    type: OS::Neutron::Net
+    properties:
+      name: { get_param: mgmt_net_name }
+
+  mgmt_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: mgmt_net }
+      cidr:       { get_param: mgmt_net_cidr }
+      gateway_ip: { get_param: mgmt_net_gateway }
+      allocation_pools:
+        - start:  { get_param: mgmt_net_pool_start }
+          end:    { get_param: mgmt_net_pool_end }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      external_gateway_info:
+        network: { get_param: public_net_id }
+
+  router_interface_mgmt:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: mgmt_subnet }
+
+  manager:
+    type: OS::Nova::Server
+    properties:
+      name: manager
+      image:     { get_param: image }
+      flavor:    { get_param: flavor }
+      key_name:  { get_param: key_name }
+      networks:
+        - port:  { get_resource: manager_port }
+      user_data: { get_file: lib/manager.bash }
+
+  manager_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id:      { get_resource: mgmt_net }
+      security_groups:
+        - default
+        - { get_resource: manager_ssh_sec_group }
+      fixed_ips:
+        - subnet_id:   { get_resource: mgmt_subnet }
+
+  manager_public_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_net_id }
+      port_id:          { get_resource: manager_port }
+
+  manager_ssh_sec_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      description: Public SSH access
+      name: ssh
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+
+outputs:
+  manager_mgmt_ip:
+    description: IP address of the manager instance on the management network.
+    value: { get_attr: [manager, networks, get_param: mgmt_net_name, 0] }
+  mgmt_net:
+    value: { get_resource: mgmt_net }
+  mgmt_subnet:
+    value: { get_resource: mgmt_subnet }
