@@ -1,6 +1,4 @@
 class profile::base {
-	$root_ssh_key = lookup('base::root_ssh_key')
-
 	# setup time and date
 	class { 'ntp':
 		servers  => ['ntp.ntnu.no'],
