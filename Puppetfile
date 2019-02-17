@@ -15,6 +15,6 @@ mod 'puppetlabs-postgresql', '5.12.1'
 mod 'puppetlabs-firewall', '1.15.1'
 
 mod 'ajjahn-dns',
-  :git    => 'https://github.com/ajjahn/puppet-dns',
-  :commit => '57946eb'
+  :git    => 'https://github.com/jearls/puppet-dns',
+  :branch => 'fix_rfc1912_zone_handling'
 mod 'puppetlabs-concat', '5.2.0'

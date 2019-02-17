@@ -5,7 +5,7 @@ class profile::dns::server {
 	include dns::server
 
 	# forwarders
-	dns::server::options { '/etc/bind/named.conf.options':
+	dns::server::options { '/etc/named/named.conf.options':
 		forwarders => [
 			'1.1.1.1',
 			'1.0.0.1'
