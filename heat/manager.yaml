@@ -11,7 +11,7 @@ parameters:
   image:
     type: string
     description: ID or name of image used for the compute instance(s).
-    default: Ubuntu Server 18.04 LTS (Bionic Beaver) amd64
+    default: CentOS 7.5 x86_64
   flavor:
     type: string
     description: ID or name of flavor used for the compute instance(s).
