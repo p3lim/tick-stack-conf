@@ -11,7 +11,7 @@ class profile::base {
 		timezone => 'Europe/Oslo',
 	}
 
-	unless $::fqdn == 'manager.tick.lab' {
+	unless $::fqdn == 'manager.lab' {
 		# add manager pubkey to authorized_keys
 		sshkeys::set_authorized_key { "centos@manager to centos@${::hostname}":
 		  local_user  => 'centos',

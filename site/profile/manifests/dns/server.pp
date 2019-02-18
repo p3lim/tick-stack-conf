@@ -14,9 +14,9 @@ class profile::dns::server {
 
 	# forward zone
 	dns::zone { 'lab':
-		soa         => 'manager.tick.lab',
-		soa_email   => 'admin.tick.lab',
-		nameservers => ['manager'],
+		soa         => $::fqdn,
+		soa_email   => 'admin.${::domain}',
+		nameservers => [$::hostname],
 	}
 
 	# collect A records from other nodes

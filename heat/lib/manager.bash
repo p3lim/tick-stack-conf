@@ -1,8 +1,8 @@
 #!/bin/bash -v
 
 # correct the hostname and FQDN
-echo "$(hostname -I) $(hostname -s).tick.lab $(hostname -s)" >> /etc/hosts
-hostnamectl set-hostname $(hostname -s).tick.lab
+echo "$(hostname -I) $(hostname -s).lab $(hostname -s)" >> /etc/hosts
+hostnamectl set-hostname $(hostname -s).lab
 systemctl restart systemd-hostnamed
 
 # update search resolvd's search prefix
@@ -20,7 +20,7 @@ puppet resource service puppet ensure=stopped enable=true
 puppet resource service puppetserver ensure=stopped enable=true
 
 # configure the agent's interval and master, and enable auto-signing
-puppet config set server manager.tick.lab --section main
+puppet config set server manager.lab --section main
 puppet config set runinterval 300 --section main
 puppet config set autosign true --section main
 

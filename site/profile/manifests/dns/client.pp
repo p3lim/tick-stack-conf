@@ -3,7 +3,7 @@
 class profile::dns::client {
 	# export A record for the node's hostname
 	@@dns::record::a { $::hostname:
-		zone => 'tick.lab',
+		zone => 'lab',
 		data => $::ipaddress,
 	}
 }

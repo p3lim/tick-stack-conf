@@ -1,0 +1,72 @@
+# https://docs.openstack.org/heat/rocky/template_guide/hot_spec.html#hot-spec-template-version
+heat_template_version: queens
+
+description: >
+  HOT template to create a compute instance in the management network.
+
+parameters:
+  image:
+    type: string
+    description: ID or name of image used for the compute instance(s).
+    default: CentOS 7.5 x86_64
+  flavor:
+    type: string
+    description: ID or name of flavor used for the compute instance(s).
+  hostname:
+    type: string
+    description: Name of the compute instance.
+  key_name:
+    type: string
+    description: Name of keypair used to access the compute instance(s).
+  sec_groups:
+    type: comma_delimited_list
+    description: Security groups the instances will use.
+  public_net_id:
+    type: string
+    description: ID or name of the public network floating IP addresses are allocated from.
+  mgmt_net:
+    type: string
+    description: Name of management network to be use.
+    default: tick_mgmt_net
+  mgmt_subnet:
+    type: string
+    description: Name of management subnet to be use.
+    default: tick_mgmt_net
+  manager_ip:
+    type: string
+    description: IP address of the manager instance on the management network.
+  dns_ip:
+    type: string
+    description: IP address of the DNS server on the management network.
+
+resources:
+  instance:
+    type: OS::Nova::Server
+    properties:
+      name:      { get_param: hostname }
+      image:     { get_param: image }
+      flavor:    { get_param: flavor }
+      key_name:  { get_param: key_name }
+      networks:
+        - port:  { get_resource: instance_port }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          template: { get_file: node.bash }
+          params:
+            manager_ip_address: { get_param: manager_ip }
+            dns_ip_address:     { get_param: dns_ip }
+
+  instance_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id:      { get_param: mgmt_net }
+      security_groups: { get_param: sec_groups }
+      fixed_ips:
+        - subnet_id:   { get_param: mgmt_subnet }
+
+  instance_public_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: { get_param: public_net_id }
+      port_id:          { get_resource: instance_port }
