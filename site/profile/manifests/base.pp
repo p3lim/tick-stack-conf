@@ -11,6 +11,22 @@ class profile::base {
 		timezone => 'Europe/Oslo',
 	}
 
+	unless $::fqdn == 'manager.tick.lab' {
+		# add manager pubkey to authorized_keys
+		file { '/root/.ssh':
+			ensure => 'directory',
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0700',
+		}
+		ssh_authorized_key { 'root@manager':
+			user    => 'root',
+			type    => 'ssh-rsa',
+			key     => lookup('base::manager_pubkey'),
+			require => File['/root/.ssh'],
+		}
+	}
+
 	# add FQDN to DNS
 	include ::profile::dns::client
 }

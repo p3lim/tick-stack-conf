@@ -1,0 +1,13 @@
+---
+version: 5
+
+defaults:
+  datadir: hieradata   # path relative to this file
+  data_hash: yaml_data # use the built-in YAML backend
+
+hierarchy:
+  - name: "Per-node data"
+    path: "nodes/%{trusted.certname}.yaml" # file path, relative to datadir
+
+  - name: "Common data"
+    path: "common.yaml"
