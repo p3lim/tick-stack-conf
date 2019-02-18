@@ -1,6 +1,5 @@
 node default {
-	# by default, unassigned nodes will be monitored
-	include ::role::base
+  include profile::base
 }
 
 node 'manager.tick.lab' {
