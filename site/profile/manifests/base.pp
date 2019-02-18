@@ -12,18 +12,18 @@ class profile::base {
 	}
 
 	# add manager pubkey to authorized_keys
-	file { '/home/centos/.ssh':
-		owner  => 'centos',
-		group  => 'centos',
-		mode   => '0700',
-		ensure => 'directory',
+	if $::hostname == 'manager' {
+		sshkeys::create_ssh_key { 'centos':
+			create_ssh_dir => false,
+		}
+	} else {
+		@@sshkeys::set_authorized_key { "centos@${::hostname}":
+			local_user  => 'centos',
+			remote_user => "centos@manager.lab",
+		}
 	}
-	ssh_authorized_key { 'centos@manager':
-		user    => 'centos',
-		type    => 'ssh-rsa',
-		key     => $::manager_pubkey,
-		require => File['/home/centos/.ssh'],
-	}
+
+	Sshkeys::Set_authorized_key <<||>>
 
 	# add FQDN to DNS
 	include ::profile::dns::client
