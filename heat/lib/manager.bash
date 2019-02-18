@@ -43,10 +43,6 @@ puppet apply /var/tmp/r10k.pp
 # run r10k
 r10k deploy environment -p
 
-# generate a keypair for root, and add the pubkey to hiera
-ssh-keygen -t rsa -b 4096 -C "manager" -N '' -q -f '/root/.ssh/id_rsa'
-echo "base::manager_pubkey: $(cut -d ' ' -f 2 /root/.ssh/id_rsa.pub)" >> /etc/puppetlabs/code/environments/production/hieradata/common.yaml
-
 # start the Puppet server and bootstrap the Puppet client
 puppet resource service puppetserver ensure=running enable=true
 puppet agent -t # request certificate

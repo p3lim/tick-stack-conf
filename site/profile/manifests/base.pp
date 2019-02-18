@@ -13,18 +13,13 @@ class profile::base {
 
 	unless $::fqdn == 'manager.tick.lab' {
 		# add manager pubkey to authorized_keys
-		file { '/root/.ssh':
-			ensure => 'directory',
-			owner  => 'root',
-			group  => 'root',
-			mode   => '0700',
+		sshkeys::set_authorized_key { "centos@manager to centos@${::hostname}":
+		  local_user  => 'centos',
+		  remote_user => 'centos@manager',
 		}
-		ssh_authorized_key { 'root@manager':
-			user    => 'root',
-			type    => 'ssh-rsa',
-			key     => lookup('base::manager_pubkey'),
-			require => File['/root/.ssh'],
-		}
+	} else {
+		# create a ssh key for the manager
+		sshkeys::create_ssh_key { 'centos': }
 	}
 
 	# add FQDN to DNS
