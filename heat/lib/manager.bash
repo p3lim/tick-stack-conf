@@ -50,6 +50,12 @@ puppet agent -t # configure manager
 puppet agent -t # once more to update exported resources
 puppet resource service puppet ensure=running enable=true
 
+# set firewall rules for DNS and puppetserver
+iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT
+iptables -I INPUT -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
+iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 8140 -j ACCEPT
+/sbin/service iptables save
+
 # set ourselves as the DNS server (since we're running BIND9)
 echo "DNS1=127.0.0.1" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 /etc/init.d/network restart
