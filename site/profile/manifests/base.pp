@@ -13,17 +13,18 @@ class profile::base {
 
 	# add manager pubkey to authorized_keys
 	if $::hostname == 'manager' {
-		sshkeys::create_ssh_key { 'centos':
-			create_ssh_dir => false,
-		}
+		sshkeys::create_ssh_key { 'centos': }
 	} else {
-		@@sshkeys::set_authorized_key { "centos@${::hostname}":
+		# this will add the pubkey as many times as there are nodes known by puppet,
+		# for whatever reason
+		@@sshkeys::set_authorized_key { "centos@manager to centos@${::hostname}":
 			local_user  => 'centos',
 			remote_user => "centos@manager.lab",
 		}
+
+		Sshkeys::Set_authorized_key <<||>>
 	}
 
-	Sshkeys::Set_authorized_key <<||>>
 
 	# add FQDN to DNS
 	include ::profile::dns::client
