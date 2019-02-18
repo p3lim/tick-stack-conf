@@ -40,6 +40,14 @@ class { 'r10k':
 EOF
 puppet apply /var/tmp/r10k.pp
 
+# generate ssh keys for the centos user
+ssh-keygen -t rsa -b 4096 -C "manager" -N '' -q -f '/home/centos/.ssh/id_rsa'
+chown centos:centos /home/centos/.ssh/id_rsa*
+
+# add the pubkey as a fact
+mkdir -p /etc/puppetlabs/facter/facts.d/
+echo "manager_pubkey=$(cut -d ' ' -f 2 /home/centos/.ssh/id_rsa.pub)" >> /etc/puppetlabs/facter/facts.d/pubkey.txt
+
 # run r10k
 r10k deploy environment -p
 

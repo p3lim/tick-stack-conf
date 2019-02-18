@@ -11,15 +11,18 @@ class profile::base {
 		timezone => 'Europe/Oslo',
 	}
 
-	unless $::fqdn == 'manager.lab' {
-		# add manager pubkey to authorized_keys
-		sshkeys::set_authorized_key { "centos@manager to centos@${::hostname}":
-		  local_user  => 'centos',
-		  remote_user => 'centos@manager',
-		}
-	} else {
-		# create a ssh key for the manager
-		sshkeys::create_ssh_key { 'centos': }
+	# add manager pubkey to authorized_keys
+	file { '/home/centos/.ssh':
+		owner  => 'centos',
+		group  => 'centos',
+		mode   => '0700',
+		ensure => 'directory',
+	}
+	ssh_authorized_key { 'centos@manager':
+		user    => 'centos',
+		type    => 'ssh-rsa',
+		key     => $::manager_pubkey,
+		require => File['/home/centos/.ssh'],
 	}
 
 	# add FQDN to DNS

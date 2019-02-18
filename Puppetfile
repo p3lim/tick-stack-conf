@@ -18,8 +18,3 @@ mod 'ajjahn-dns',
   :git    => 'https://github.com/jearls/puppet-dns',
   :branch => 'fix_rfc1912_zone_handling'
 mod 'puppetlabs-concat', '5.2.0'
-
-mod 'puppet-sshkeys',
-  :git    => 'https://github.com/jtopjian/puppet-sshkeys',
-  :commit => 'fc5273a'
-mod 'dalen-puppetdbquery', '3.0.1'
