@@ -15,7 +15,7 @@ class profile::dns::server {
 	# forward zone
 	dns::zone { 'lab':
 		soa         => $::fqdn,
-		soa_email   => 'admin.${::domain}',
+		soa_email   => "admin.${::domain}",
 		nameservers => [$::hostname],
 	}
 
