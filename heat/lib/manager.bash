@@ -4,9 +4,7 @@
 echo "$(hostname -I) $(hostname -s).lab $(hostname -s)" >> /etc/hosts
 hostnamectl set-hostname $(hostname -s).lab
 systemctl restart systemd-hostnamed
-
-# update search resolvd's search prefix
-/etc/init.d/network restart
+systemctl restart network
 
 # install puppetserver
 rpm -Uvh https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
@@ -56,8 +54,10 @@ iptables -I INPUT -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
 iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 8140 -j ACCEPT
 /sbin/service iptables save
 
-# set ourselves as the DNS server (since we're running BIND9)
-echo "DNS1=127.0.0.1" >> /etc/sysconfig/network-scripts/ifcfg-eth0
-/etc/init.d/network restart
+# manually control resolvd, setting ourselves as the nameserver
+echo "PEERDNS=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+echo "search lab" > /etc/resolv.conf
+echo "nameserver 127.0.0.1" > /etc/resolv.conf
+systemctl restart network
 
 #wc notify --data-binary '{"status": "SUCCESS"}'

@@ -7,9 +7,7 @@ echo "manager_ip_address manager.lab manager" >> /etc/hosts
 echo "$(hostname -I) $(hostname -s).lab $(hostname -s)" >> /etc/hosts
 hostnamectl set-hostname $(hostname -s).lab
 systemctl restart systemd-hostnamed
-
-# update search resolvd's search prefix
-/etc/init.d/network restart
+systemctl restart network
 
 # install puppet
 rpm -Uvh https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
@@ -30,8 +28,10 @@ puppet agent -t # configure
 # enable and start puppet
 puppet resource service puppet ensure=running enable=true
 
-# set the DNS server ('dns_ip_address' is a template variable for Heat)
-echo "DNS1=dns_ip_address" >> /etc/sysconfig/network-scripts/ifcfg-eth0
-/etc/init.d/network restart
+# manually control resolvd, setting the correct nameserver
+echo "PEERDNS=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
+echo "search lab" > /etc/resolv.conf
+echo "nameserver dns_ip_address" > /etc/resolv.conf
+systemctl restart network
 
 #wc notify --data-binary '{"status": "SUCCESS"}'
