@@ -23,3 +23,7 @@ mod 'puppet-sshkeys',
   :git    => 'https://github.com/jtopjian/puppet-sshkeys',
   :commit => 'fc5273a'
 mod 'dalen-puppetdbquery', '3.0.1'
+
+mod 'puppetlabs-docker', '3.3.0'
+mod 'puppetlabs-powershell', '2.2.0'
+mod 'puppetlabs-reboot', '2.1.2'
