@@ -21,4 +21,10 @@ class profile::dns::server {
 
 	# collect A records from other nodes
 	Dns::Record::A <<||>>
+
+	# TODO: firewall
 }
+
+# dns:
+#   iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT
+#   iptables -I INPUT -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT

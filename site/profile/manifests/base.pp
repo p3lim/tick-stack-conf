@@ -25,7 +25,11 @@ class profile::base {
 		Sshkeys::Set_authorized_key <<||>>
 	}
 
-
 	# add FQDN to DNS
 	include ::profile::dns::client
+
+	# TODO: firewall
 }
+
+# ssh:
+#   iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
