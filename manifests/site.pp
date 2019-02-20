@@ -1,5 +1,5 @@
 node default {
-  include profile::base
+	include profile::base
 }
 
 node 'manager.lab' {
