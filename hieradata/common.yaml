@@ -1,1 +1,6 @@
 ---
+influx::db_name:
+influx::admin_user:
+influx::admin_pass:
+influx::telegraf_user:
+influx::telegraf_pass:
