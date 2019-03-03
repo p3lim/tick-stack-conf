@@ -6,5 +6,5 @@ class profile::firewall {
 	}
 
 	class { ['::profile::firewall::pre', '::profile::firewall::post']: }
-	class { 'firewall': }
+	include firewall
 }
