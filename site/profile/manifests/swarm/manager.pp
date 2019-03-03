@@ -5,6 +5,7 @@ class profile::swarm::manager {
 		init           => true,
 		advertise_addr => $::ipaddress,
 		listen_addr    => $::ipaddress,
+		before         => File['/etc/puppetlabs/facter/facts.d/swarm_token.sh'],
 	}
 
 	file { ['/etc/puppetlabs/facter', '/etc/puppetlabs/facter/facts.d']:

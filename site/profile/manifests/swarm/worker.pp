@@ -1,14 +1,14 @@
 class profile::swarm::worker {
 	include 'docker'
 
-	$manager = puppetdb_query('inventory[facts] {facts.trusted.certname ~ "manager"}')
+	$master = puppetdb_query('inventory[facts] {facts.trusted.certname ~ "master"}')
 
 	docker::swarm { 'cluster':
 		join           => true,
 		advertise_addr => $::ipaddress,
 		listen_addr    => $::ipaddress,
-		manager_ip     => $manager[0]['facts']['ipaddress'],
-		token          => $manager[0]['facts']['swarm_token'],
+		manager_ip     => $master[0]['facts']['ipaddress'],
+		token          => $master[0]['facts']['swarm_token'],
 	}
 
 	# TODO: firewall (2376/tcp, 7946/tcp/udp, 4789/udp)
