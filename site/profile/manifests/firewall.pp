@@ -4,8 +4,6 @@ class profile::firewall {
 		require => Class['::profile::firewall::pre'],
 	}
 
-	include ::profile::firewall::pre
-	include ::profile::firewall::post
-
-	include ::firewall
+	class { ['::profile::firewall::pre', '::profile::firewall::post']: }
+	class { 'firewall': }
 }
