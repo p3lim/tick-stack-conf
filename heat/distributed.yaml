@@ -34,6 +34,9 @@ parameters:
   dns_ip:
     type: string
     description: IP address of the DNS server on the management network.
+  influx_sec_group:
+    type: string
+    description: InfluxDB and Chronograf security group
 
 resources:
   master:
@@ -45,7 +48,7 @@ resources:
       key_name:      { get_param: key_name }
       sec_groups:
         - default
-        - ssh # TEMP
+        - { get_param: influx_sec_group }
       public_net_id: { get_param: public_net_id }
       mgmt_net:      { get_param: mgmt_net }
       mgmt_subnet:   { get_param: mgmt_subnet }
@@ -65,7 +68,7 @@ resources:
           key_name:      { get_param: key_name }
           sec_groups:
             - default
-            - ssh # TEMP
+            - { get_param: influx_sec_group }
           public_net_id: { get_param: public_net_id }
           mgmt_net:      { get_param: mgmt_net }
           mgmt_subnet:   { get_param: mgmt_subnet }
