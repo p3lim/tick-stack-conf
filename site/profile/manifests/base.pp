@@ -29,4 +29,6 @@ class profile::base {
 	# add FQDN to DNS
 	include ::profile::dns::client
 
+	# all nodes are monitored
+	include ::profile::influx::telegraf
 }
