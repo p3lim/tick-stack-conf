@@ -48,12 +48,6 @@ puppet agent -t # configure manager
 puppet agent -t # once more to update exported resources
 puppet resource service puppet ensure=running enable=true
 
-# set firewall rules for DNS and puppetserver
-iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT
-iptables -I INPUT -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
-iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 8140 -j ACCEPT
-/sbin/service iptables save
-
 # manually control resolvd, setting ourselves as the nameserver
 echo "PEERDNS=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 echo "search lab" > /etc/resolv.conf

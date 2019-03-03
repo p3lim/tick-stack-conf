@@ -11,11 +11,14 @@ class profile::swarm::worker {
 		token          => $master[0]['facts']['swarm_token'],
 	}
 
-	# TODO: firewall (2376/tcp, 7946/tcp/udp, 4789/udp)
-}
+	# firewall
+	::profile::firewall::management { 'Docker Swarm Worker TCP':
+		port     => [2376, 7946],
+		protocol => 'tcp',
+	}
 
-# swarm worker:
-#   iptables -I INPUT -p tcp --dport 2376 -j ACCEPT
-#   iptables -I INPUT -p tcp --dport 7946 -j ACCEPT
-#   iptables -I INPUT -p udp --dport 7946 -j ACCEPT
-#   iptables -I INPUT -p udp --dport 4789 -j ACCEPT
+	::profile::firewall::management { 'Docker Swarm Worker UDP':
+		port     => [7946, 4789],
+		protocol => 'udp',
+	}
+}

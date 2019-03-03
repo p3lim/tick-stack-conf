@@ -4,8 +4,9 @@ class profile::puppetdb {
 	include puppetdb
 	include puppetdb::master::config
 
-	# TODO: firewall
+	# firewall
+	::profile::firewall::management { 'PuppetDB TCP':
+		port     => 8140,
+		protocol => 'tcp',
+	}
 }
-
-# puppetdb:
-#   iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 8140 -j ACCEPT

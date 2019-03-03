@@ -26,12 +26,14 @@ echo "swarm_token=$(docker swarm join-token worker -q)"
 		require => File['/etc/puppetlabs/facter/facts.d'],
 	}
 
-	# TODO: firewall (2376/tcp, 2377/tcp, 7946/tcp/udp, 4789/udp)
-}
+	# firewall
+	::profile::firewall::management { 'Docker Swarm Manager TCP':
+		port     => [2376, 2377, 7946],
+		protocol => 'tcp',
+	}
 
-# swarm manager:
-#   iptables -I INPUT -p tcp --dport 2376 -j ACCEPT
-#   iptables -I INPUT -p tcp --dport 2377 -j ACCEPT
-#   iptables -I INPUT -p tcp --dport 7946 -j ACCEPT
-#   iptables -I INPUT -p udp --dport 7946 -j ACCEPT
-#   iptables -I INPUT -p udp --dport 4789 -j ACCEPT
+	::profile::firewall::management { 'Docker Swarm Manager UDP':
+		port     => [7946, 4789],
+		protocol => 'udp',
+	}
+}

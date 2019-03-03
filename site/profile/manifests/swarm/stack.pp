@@ -10,12 +10,19 @@ class profile::swarm::stack {
 		require       => File['/tmp/ick-stack.yaml'],
 	}
 
-	# TODO: firewall
-}
+	# firewall
+	::profile::firewall::management { 'InfluxDB TCP':
+		port     => 8086,
+		protocol => 'tcp',
+	}
 
-# InfluxDB:
-#   iptables -I INPUT -p tcp --dport 8086 -j ACCEPT
-# Kapacitor
-#   iptables -I INPUT -p tcp --dport 9092 -j ACCEPT
-# Chronograf:
-#   iptables -I INPUT -p tcp --dport 8888 -j ACCEPT
+	::profile::firewall::management { 'Kapacitor TCP':
+		port     => 9092,
+		protocol => 'tcp',
+	}
+
+	::profile::firewall::public { 'Chronograf TCP':
+		port     => 8888,
+		protocol => 'tcp',
+	}
+}
