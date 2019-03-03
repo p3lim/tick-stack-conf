@@ -11,7 +11,7 @@ class profile::influx::telegraf {
 			'cpu' => {
 				'percpu'   => true,
 				'totalcpu' => true,
-			}
+			},
 			'system' => {}
 		},
 		outputs => {
