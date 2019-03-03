@@ -27,5 +27,3 @@ mod 'dalen-puppetdbquery', '3.0.1'
 mod 'puppetlabs-docker', '3.3.0'
 mod 'puppetlabs-powershell', '2.2.0'
 mod 'puppetlabs-reboot', '2.1.2'
-
-mod 'puppetlabs-firewall', '1.15.1'
