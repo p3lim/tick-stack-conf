@@ -1,6 +1,6 @@
 ---
-influx::db_name:
-influx::admin_user:
-influx::admin_pass:
-influx::telegraf_user:
-influx::telegraf_pass:
+influx::db_name: telegraf
+influx::admin_user: admin
+influx::admin_pass: adminadminadminadmin
+influx::telegraf_user: telegraf
+influx::telegraf_pass: metricsmetricsmetricsmetrics
