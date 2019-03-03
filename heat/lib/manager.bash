@@ -51,7 +51,7 @@ puppet resource service puppet ensure=running enable=true
 # manually control resolvd, setting ourselves as the nameserver
 echo "PEERDNS=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
 echo "search lab" > /etc/resolv.conf
-echo "nameserver 127.0.0.1" > /etc/resolv.conf
+echo "nameserver 127.0.0.1" >> /etc/resolv.conf
 systemctl restart network
 
 #wc notify --data-binary '{"status": "SUCCESS"}'
