@@ -11,12 +11,4 @@ define profile::firewall::management (
 		action => 'accept',
 		source => '192.168.0.0/16',
 	}
-
-	firewall { "5 Accept ipv6 service ${name} from ${net}":
-		proto    => $protocol,
-		dport    => $port,
-		action   => 'accept',
-		source   => '192.168.0.0/16',
-		provider => 'ip6tables',
-	}
 }
