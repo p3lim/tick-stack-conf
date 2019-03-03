@@ -1,5 +1,6 @@
 # https://forge.puppet.com/puppetlabs/puppetdb
 
+# this class sets up the PuppetDB instance
 class profile::puppetdb {
 	include puppetdb
 	include puppetdb::master::config

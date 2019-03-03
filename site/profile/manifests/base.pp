@@ -1,3 +1,4 @@
+# this class sets up base configuration for all nodes
 class profile::base {
 	# setup time and date
 	class { 'ntp':

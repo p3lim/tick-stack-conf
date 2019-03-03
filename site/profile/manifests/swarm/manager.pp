@@ -1,3 +1,4 @@
+# this class initiates a Docker Swarm cluster
 class profile::swarm::manager {
 	include 'docker'
 

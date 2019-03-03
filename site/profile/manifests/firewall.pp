@@ -1,3 +1,4 @@
+# this class sets up the firewall
 class profile::firewall {
 	Firewall {
 		before  => Class['::profile::firewall::post'],

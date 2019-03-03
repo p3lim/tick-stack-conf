@@ -1,6 +1,7 @@
 # https://github.com/ajjahn/puppet-dns#usage
 # https://github.com/ajjahn/puppet-dns#exported-resource-patterns
 
+# this class sets up the DNS server for the management network
 class profile::dns::server {
 	include dns::server
 

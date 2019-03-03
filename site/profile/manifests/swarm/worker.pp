@@ -1,3 +1,4 @@
+# this class joins workers into the Docker Swarm
 class profile::swarm::worker {
 	include 'docker'
 

@@ -1,3 +1,4 @@
+# this class sets up the r10k service
 class profile::r10k {
 	class { 'r10k':
 		version => latest,

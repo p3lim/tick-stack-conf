@@ -1,3 +1,4 @@
+# this class creates and maintains the ICK portion of the TICK stack
 class profile::swarm::stack {
 	file { '/tmp/ick-stack.yaml':
 		ensure  => file,

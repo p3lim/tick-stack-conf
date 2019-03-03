@@ -1,4 +1,6 @@
+# this class sets up the basic firewall rules
 class profile::firewall::pre {
+	# wipe existing firewall rules
 	Firewall {
 		require => undef,
 	}
