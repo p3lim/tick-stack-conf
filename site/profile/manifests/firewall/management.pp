@@ -1,5 +1,5 @@
 # this class is used to open up the firewall for the given service on all networks
-define profile::firewall::public (
+define profile::firewall::management (
 	Variant[Integer, Array[Integer], String] $port,
 	String                                   $protocol,
 ){
