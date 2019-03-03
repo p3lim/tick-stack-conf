@@ -11,7 +11,7 @@ define profile::firewall::public (
 		action => 'accept',
 	}
 
-	firewall { "5 Accept service ${name} from ${net}":
+	firewall { "5 Accept ipv6 service ${name} from ${net}":
 		proto    => $protocol,
 		dport    => $port,
 		action   => 'accept',
