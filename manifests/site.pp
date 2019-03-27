@@ -13,3 +13,7 @@ node 'master.lab' {
 node /^worker-\d+\.lab$/ {
 	include ::role::worker
 }
+
+node 'monotick' {
+	include ::role::monolithic
+}
