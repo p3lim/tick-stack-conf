@@ -46,7 +46,7 @@ puppet resource service puppetserver ensure=running enable=true
 puppet agent -t # request certificate
 puppet agent -t # configure manager
 puppet agent -t # once more to update exported resources
-puppet resource service puppet ensure=running enable=true
+puppet resource service puppet ensure=running enable=true hasrestart=true
 
 # manually control resolvd, setting ourselves as the nameserver
 echo "PEERDNS=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
