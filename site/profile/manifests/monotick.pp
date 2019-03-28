@@ -1,8 +1,8 @@
 # == Class: profile::monotick
 #
 class profile::monotick {
-  $telegraf_user = lookup('monolithic::telegraf_user')
-  $telegraf_pass = lookup('monolithic::telegraf_pass')
+  $telegraf_user = lookup('influx::telegraf_user')
+  $telegraf_pass = lookup('influx::telegraf_pass')
 
   include tick_stack::influxdb
   include tick_stack::chronograf

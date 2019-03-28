@@ -14,6 +14,6 @@ node /^worker-\d+\.lab$/ {
 	include ::role::worker
 }
 
-node 'monotick' {
+node 'monostack.lab' {
 	include ::role::monolithic
 }
