@@ -41,6 +41,15 @@ puppet apply /var/tmp/r10k.pp
 # run r10k
 r10k deploy environment -p
 
+# the default puppet.service doesn't have a restart clause, we'll add it
+mkdir -p /etc/systemd/system/puppet.service.d/
+cat << EOF > /etc/systemd/system/puppet.service.d/restart.conf
+[Service]
+Restart=on-failure
+RestartSec=30s
+EOF
+systemctl daemon-reload
+
 # start the Puppet server and bootstrap the Puppet client
 puppet resource service puppetserver ensure=running enable=true
 puppet agent -t # request certificate

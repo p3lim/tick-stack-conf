@@ -25,8 +25,17 @@ puppet config set runinterval 300 --section main
 puppet agent -t # request certificate
 puppet agent -t # configure
 
+# the default puppet.service doesn't have a restart clause, we'll add it
+mkdir -p /etc/systemd/system/puppet.service.d/
+cat << EOF > /etc/systemd/system/puppet.service.d/restart.conf
+[Service]
+Restart=on-failure
+RestartSec=30s
+EOF
+systemctl daemon-reload
+
 # enable and start puppet
-puppet resource service puppet ensure=running enable=true hasrestart=true
+puppet resource service puppet ensure=running enable=true
 
 # manually control resolvd, setting the correct nameserver
 echo "PEERDNS=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0
