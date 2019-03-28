@@ -28,8 +28,6 @@ mod 'puppetlabs-docker', '3.3.0'
 mod 'puppetlabs-powershell', '2.2.0'
 mod 'puppetlabs-reboot', '2.1.2'
 
-mod 'puppetlabs-accounts', '3.2.0'
-
 mod 'tick_stack',
   :git    => 'https://github.com/vetletm/tick_stack',
   :commit => 'de5e50a'
