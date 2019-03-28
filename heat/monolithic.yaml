@@ -1,0 +1,56 @@
+# https://docs.openstack.org/heat/rocky/template_guide/hot_spec.html#hot-spec-template-version
+heat_template_version: queens
+
+description: >
+  HOT template to create compute instances for a distributed implementation
+  of the TICK stack.
+
+parameters:
+  image:
+    type: string
+    description: ID or name of image used for the compute instance(s).
+    default: CentOS 7.5 x86_64
+  flavor:
+    type: string
+    description: ID or name of flavor used for the compute instance(s).
+    default: m1.medium
+  key_name:
+    type: string
+    description: Name of keypair used to access the compute instance(s).
+  public_net_id:
+    type: string
+    description: ID or name of the public network floating IP addresses are allocated from.
+  mgmt_net:
+    type: string
+    description: Name of management network to be use.
+    default: tick_mgmt_net
+  mgmt_subnet:
+    type: string
+    description: Name of management subnet to be use.
+    default: tick_mgmt_net
+  manager_ip:
+    type: string
+    description: IP address of the manager instance on the management network.
+  dns_ip:
+    type: string
+    description: IP address of the DNS server on the management network.
+  influx_sec_group:
+    type: string
+    description: InfluxDB and Chronograf security group
+
+resources:
+  monostack:
+    type: lib/generic_node.yaml
+    properties:
+      hostname: monostack
+      image:         { get_param: image }
+      flavor:        m1.medium
+      key_name:      { get_param: key_name }
+      sec_groups:
+        - default
+        - { get_param: influx_sec_group }
+      public_net_id: { get_param: public_net_id }
+      mgmt_net:      { get_param: mgmt_net }
+      mgmt_subnet:   { get_param: mgmt_subnet }
+      manager_ip:    { get_param: manager_ip }
+      dns_ip:        { get_param: dns_ip }

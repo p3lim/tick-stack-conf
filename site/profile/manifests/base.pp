@@ -30,5 +30,5 @@ class profile::base {
 	include ::profile::dns::client
 
 	# all nodes are monitored
-	include ::profile::influx::telegraf
+	# include ::profile::influx::telegraf
 }
