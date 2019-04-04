@@ -14,8 +14,11 @@ class profile::monotick {
         'percpu'   => true,
         'totalcpu' => true,
       },
-      'system' => {},
-      'mem'    => {}
+      'system'  => {},
+      'mem'     => {},
+      'net'     => {},
+      'netstat' => {}
+
     },
     outputs => {
 			'influxdb' => {
