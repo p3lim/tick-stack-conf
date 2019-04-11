@@ -20,7 +20,7 @@ class profile::monotick {
       'netstat'   => {},
       'processes' => {},
       'procstat'  => {
-        'pattern' => '"influx|kapa*',
+        'pattern' => '"influx|kapa*"',
       },
     },
     outputs => {
