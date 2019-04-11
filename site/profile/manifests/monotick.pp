@@ -14,20 +14,23 @@ class profile::monotick {
         'percpu'   => true,
         'totalcpu' => true,
       },
-      'system'  => {},
-      'mem'     => {},
-      'net'     => {},
-      'netstat' => {}
-
+      'system'    => {},
+      'mem'       => {},
+      'net'       => {},
+      'netstat'   => {},
+      'processes' => {},
+      'procstat'  => {
+        'pattern' => '"influx|kapa*',
+      },
     },
     outputs => {
-			'influxdb' => {
-				'urls'      => "[\"http://127.0.0.1:8086\"]",
-				'database'  => '"telegraf"',
-				'precision' => '"s"',
-				'username'  => "\"${telegraf_user}\"",
-				'password'  => "\"${telegraf_pass}\"",
-			}
-		}
+      'influxdb' => {
+        'urls'      => "[\"http://127.0.0.1:8086\"]",
+        'database'  => '"telegraf"',
+        'precision' => '"s"',
+        'username'  => "\"${telegraf_user}\"",
+        'password'  => "\"${telegraf_pass}\"",
+      }
+    }
   }
 }
