@@ -9,7 +9,14 @@ class profile::influx::telegraf {
 				'percpu'   => true,
 				'totalcpu' => true,
 			},
-			'system' => {}
+			'system'    => {},
+			'mem'       => {},
+			'net'       => {},
+			'netstat'   => {},
+			'processes' => {},
+			'procstat'  => {
+				'pattern' => '"influx|kapa*"',
+			},
 		},
 		outputs => {
 			'influxdb' => {
