@@ -1,3 +1,6 @@
+# Manager role, for the node acting as the manager for the entire infrastructure.
+# Uses the base profile, runs PuppetDB and the DNS server, and gets monitored by Telegraf.
+
 class role::manager {
 	include profile::base
 	include profile::puppetdb

@@ -1,3 +1,5 @@
+# Assign roles to nodes based on their FQDN.
+
 node default {
 	include profile::base
 }

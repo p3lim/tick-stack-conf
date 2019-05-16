@@ -1,11 +1,12 @@
+# This class sets up the DNS server for the management network.
 # https://github.com/ajjahn/puppet-dns#usage
 # https://github.com/ajjahn/puppet-dns#exported-resource-patterns
 
-# this class sets up the DNS server for the management network
 class profile::dns::server {
+	# Install the DNS server
 	include dns::server
 
-	# forwarders
+	# Set forwarding addresses (CloudFlare DNS)
 	dns::server::options { '/etc/named/named.conf.options':
 		forwarders => [
 			'1.1.1.1',
@@ -13,17 +14,17 @@ class profile::dns::server {
 		],
 	}
 
-	# forward zone
+	# Set forward zone
 	dns::zone { 'lab':
 		soa         => $::fqdn,
 		soa_email   => "admin.${::domain}",
 		nameservers => [$::hostname],
 	}
 
-	# collect A records from other nodes
+	# Collect A records from other nodes
 	Dns::Record::A <<||>>
 
-	# firewall
+	# Open up the firewall for DNS traffic
 	::profile::firewall::management { 'DNS TCP':
 		port     => 53,
 		protocol => 'tcp',

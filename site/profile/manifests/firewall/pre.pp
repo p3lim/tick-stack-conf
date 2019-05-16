@@ -1,11 +1,12 @@
-# this class sets up the basic firewall rules
+# This class sets up the basic firewall rules.
+
 class profile::firewall::pre {
-	# wipe existing firewall rules
+	# Wipe existing firewall rules
 	Firewall {
 		require => undef,
 	}
 
-	# default firewall rules
+	# Set default firewall rules
 	firewall { '000 accept all icmp':
 		proto  => 'icmp',
 		action => 'accept',

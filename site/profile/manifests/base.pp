@@ -1,6 +1,7 @@
-# this class sets up base configuration for all nodes
+# This class sets up base configuration for all nodes, including NTP and time, SSH keys and DNS
+
 class profile::base {
-	# setup time and date
+	# Configure time syncronization
 	class { 'ntp':
 		servers  => ['ntp.ntnu.no'],
 		restrict => [
@@ -8,15 +9,17 @@ class profile::base {
 			'-6 default kod nomodify notrap nopeer noquery',
 		],
 	}
+
+	# Configure timezone
 	class { 'timezone':
 		timezone => 'Europe/Oslo',
 	}
 
 	if $::hostname == 'manager' {
-		# create new ssh key so manager can act as a bastion
+		# Create new SSH key so manager can act as a bastion
 		sshkeys::create_ssh_key { 'centos': }
 
-		# add our own ssh keys so we can access the machine
+		# Add our own SSH keys so we can access the machine
 		ssh_authorized_key { 'vetle key':
 			user => 'centos',
 			type => 'ssh-rsa',
@@ -33,8 +36,7 @@ class profile::base {
 			key  => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQC0pKvREBwboDpu6amLCclc0YisTNqKCAbD1t/JrZ5WyYh8ms7M2vga3/5Y0zyoxErXEGNnArV3lMgQhvx/OXYn7LA/wdDlk12XgZCxAYYB1hrsEi3w1Cy2XLtNGUuA0XBDxb6XMzyifbGigCWqWm2HRIIdRO/MDJZDi7dAMGH7VFqE6I0e72nBswwYrKv1hvVfzlMsgosz5+h6InIQ0HjhhE8EQuPDVrN2iesaB4Yp4nonTmJANN/ta3tUxhC7RAA86YvnIs4TFVWENVqhkILhq3ol5vr4U80OQ35WqhWnb67z2zLJWJvyhn8dSpJ74ORzzsMmTb1Ei80WreoWMbZGgIH27ICFKi4NDH0OyUhUlvdzxpeYTUGX5VD8+05/s+du/0gm81NlIqrk0E9HpyCdy+m/UlSNRrmSdsUs+MLvsr5M0uNkp7Gky1oRhypN0ZurpyTnY+ejXAmKfuRBqgFmQCpfMvdC2hs2mDfxcE6pP1LH65/goM9bSZgPCphkAU9FRlIfAUzyvw5dQO91z0xGcc5vElv1iXCr/2IdueDPNCL7N9YT373nIjMCbQp/etekE76ytgawFC7W2QOOE9ZROnhY2Acbs5U9PwGL5VZDRdNzDR1ECrKSsxwqfuZUbC4FpD/CV44onVF8Ccy6365odMFUnURgrvvHrIpqwAD86Q==',
 		}
 	} else {
-		# this will add the pubkey as many times as there are nodes known by puppet,
-		# for whatever reason
+		# This will add the SSH key of the manager node to every other node
 		@@sshkeys::set_authorized_key { "centos@manager to centos@${::hostname}":
 			local_user  => 'centos',
 			remote_user => "centos@manager.lab",
@@ -43,6 +45,6 @@ class profile::base {
 		Sshkeys::Set_authorized_key <<||>>
 	}
 
-	# add FQDN to DNS
+	# Add FQDN to DNS
 	include ::profile::dns::client
 }
